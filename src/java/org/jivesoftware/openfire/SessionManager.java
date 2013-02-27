@@ -571,7 +571,7 @@ public class SessionManager extends BasicModule implements ClusterEventListener 
      *
      * @param session the session that receieved an available presence.
      */
-    public void sessionAvailable(LocalClientSession session) {
+    public void sessionAvailable(LocalClientSession session, Presence presence) {
         if (session.getAuthToken().isAnonymous()) {
             // Anonymous session always have resources so we only need to add one route. That is
             // the route to the anonymous session
@@ -583,6 +583,7 @@ public class SessionManager extends BasicModule implements ClusterEventListener 
             routingTable.addClientRoute(session.getAddress(), session);
             // Broadcast presence between the user's resources
             broadcastPresenceOfOtherResource(session);
+            broadcastPresenceToOtherResources(session.getAddress(), presence);
         }
     }
 
@@ -621,9 +622,6 @@ public class SessionManager extends BasicModule implements ClusterEventListener 
         JID searchJID = new JID(originatingResource.getNode(), originatingResource.getDomain(), null);
         List<JID> addresses = routingTable.getRoutes(searchJID, null);
         for (JID address : addresses) {
-            if (address.equals(originatingResource)) {
-                continue;
-            }
             // Send the presence of the session whose presence has changed to
             // this other user's session
             presence.setTo(address);
