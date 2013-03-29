@@ -25,6 +25,8 @@ import org.jivesoftware.openfire.container.PluginManager;
 import org.jivesoftware.openfire.group.Group;
 import org.jivesoftware.openfire.group.GroupManager;
 import org.jivesoftware.openfire.group.GroupNotFoundException;
+import org.jivesoftware.openfire.session.ClientSession;
+import org.jivesoftware.openfire.SessionManager;
 import org.jivesoftware.openfire.lockout.LockOutManager;
 import org.jivesoftware.openfire.user.User;
 import org.jivesoftware.openfire.user.UserAlreadyExistsException;
@@ -105,6 +107,25 @@ public class UserServicePlugin implements Plugin, PropertyEventListener {
         userManager.deleteUser(user);
     }
 
+    /**
+     * kick an user
+     *
+     * @param username the username of the local user to disable.
+     * @throws UserNotFoundException if the requested user
+     *         does not exist in the local server.
+     */
+    public void kickUser(String username) throws UserNotFoundException
+    {
+	    boolean found = false;
+        for( ClientSession session : SessionManager.getInstance().getSessions(username) ) 
+	{
+		session.close();
+		found = true;
+	}
+
+	if (!found)
+            throw new UserNotFoundException("No sessions found for this user");
+    }
     /**
      * Lock Out on a given username
      *

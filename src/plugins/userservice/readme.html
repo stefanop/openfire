@@ -95,7 +95,7 @@ The following parameters can be passed into the request:<p>
 </tr>
 <tr>
     <td class="name">type</td><td>Required</td><td>The admin service required. 
-    Possible values are add, delete, update, enable, disable</td>
+    Possible values are add, delete, update, enable, disable, kick</td>
 </tr>
 <tr>
     <td class="name">secret</td><td>Required</td>
@@ -178,6 +178,17 @@ http://example.com:9090/plugins/userService/userservice?type=update&secret=bigse
 </textarea>
 </form>
 </ul>
+
+This example kicks (disconnects) a user
+
+<ul>
+<form>
+<textarea cols=65 rows=3 wrap=virtual>
+http://example.com:9090/plugins/userService/userservice?type=kick&secret=bigsecret&username=kafka
+</textarea>
+</form>
+</ul>
+
 
 <br><br>
 * When sending double characters (Chinese/Japanese/Korean etc) you should URLEncode the string as utf8.<br> 

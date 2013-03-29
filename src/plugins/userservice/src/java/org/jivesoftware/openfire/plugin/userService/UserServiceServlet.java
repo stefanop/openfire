@@ -146,6 +146,10 @@ public class UserServiceServlet extends HttpServlet {
                 plugin.disableUser(username);
                 replyMessage("ok",response,out);
             }
+            else if ("kick".equals(type)) {
+                plugin.kickUser(username);
+                replyMessage("ok",response,out);
+            }
             else if ("update".equals(type)) {
                 plugin.updateUser(username, password,name,email, groupNames);
                 replyMessage("ok",response,out);
